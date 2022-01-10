@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.controller.model.PetDTO;
 import com.udacity.jdnd.course3.critter.error.CustomerNotFound;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
+import com.udacity.jdnd.course3.critter.repository.model.Customer;
 import com.udacity.jdnd.course3.critter.repository.model.Pet;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +24,25 @@ public class PetService {
         this.customerRepository = customerRepository;
     }
 
+    public List<PetDTO> getPets(){
+        return petRepository.findAll().stream().map(pet -> pet.toPetDTO()).collect(Collectors.toList());
+    }
+
     public PetDTO savePet(PetDTO petDTO) throws CustomerNotFound {
 
         Pet pet =  Pet.fromPetDTO(petDTO);
         customerRepository.findById(petDTO.getOwnerId()).ifPresentOrElse(
-            customer -> {
-                pet.setCustomer(customer);
-            }, () -> {
-                throw new CustomerNotFound();
-            });
-        return petRepository.save(pet).toPetDTO();
+            customer -> pet.setCustomer(customer),
+            () -> {throw new CustomerNotFound();});
+
+
+        Pet petSaved = petRepository.save(pet);
+        Customer customer = petSaved.getCustomer();
+
+        customer.getPets().add(petSaved);
+        customerRepository.save(customer);
+
+        return petSaved.toPetDTO();
 
     }
 

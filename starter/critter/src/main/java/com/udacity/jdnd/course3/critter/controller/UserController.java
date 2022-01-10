@@ -6,6 +6,8 @@ import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +30,11 @@ import java.util.Set;
 @RequestMapping("/user")
 public class UserController {
 
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final CustomerService customerService;
     private final EmployeeService employeeService;
     private final PetService petService;
+
 
     public UserController(CustomerService customerService, EmployeeService employeeService, PetService petService) {
         this.customerService = customerService;
@@ -66,12 +70,16 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(employeeId);
+        employeeDTO.setDaysAvailable(daysAvailable);
+        employeeService.updateEmployee(employeeDTO);
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        return employeeService.getEmployessByServiceAndTime(employeeDTO);
+
     }
 
 }

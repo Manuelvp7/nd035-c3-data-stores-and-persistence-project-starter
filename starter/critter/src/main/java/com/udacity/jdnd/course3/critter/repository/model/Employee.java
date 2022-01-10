@@ -3,8 +3,6 @@ package com.udacity.jdnd.course3.critter.repository.model;
 import com.udacity.jdnd.course3.critter.controller.model.EmployeeDTO;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import java.time.DayOfWeek;
 import java.util.Set;
 
@@ -25,15 +22,12 @@ public class Employee {
     @Nationalized
     private String name;
 
+
     @ElementCollection(targetClass = EmployeeSkill.class)
-    @CollectionTable(name = "skills", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "skills", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
 
-    @ElementCollection(targetClass = DayOfWeek.class)
-    @CollectionTable(name = "days", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "days", nullable = false)
+    @ElementCollection(targetClass= DayOfWeek.class)
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> daysAvailable;
 
@@ -82,6 +76,7 @@ public class Employee {
 
     public static Employee fromEmployeeDTO(EmployeeDTO employeeDTO){
         Employee employee = new Employee();
+        employee.setId(employeeDTO.getId());
         employee.setDaysAvailable(employeeDTO.getDaysAvailable());
         employee.setName(employeeDTO.getName());
         employee.setSkills(employeeDTO.getSkills());

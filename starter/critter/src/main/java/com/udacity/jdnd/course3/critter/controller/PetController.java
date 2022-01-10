@@ -36,7 +36,7 @@ public class PetController {
 
     @GetMapping
     public List<PetDTO> getPets(){
-        throw new UnsupportedOperationException();
+        return petService.
     }
 
     @GetMapping("/owner/{ownerId}")

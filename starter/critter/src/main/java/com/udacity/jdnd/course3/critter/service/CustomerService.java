@@ -6,6 +6,7 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.repository.model.Customer;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class CustomerService {
     public Customer saveCustomer(CustomerDTO customerDTO){
 
         Customer customer = Customer.fromCustomerDTO(customerDTO);
+        customer.setPets(new ArrayList<>());
         return customerRepository.save(customer);
     }
 

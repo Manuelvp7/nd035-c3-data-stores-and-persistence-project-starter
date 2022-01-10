@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.repository.model;
 import com.udacity.jdnd.course3.critter.controller.model.PetDTO;
 import org.hibernate.annotations.Nationalized;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,8 +28,9 @@ public class Pet {
     private PetType type;
     @Nationalized
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Customer customer;
+    @Column(name = "birth_date", nullable = true)
     private LocalDate birthDate;
     @Column(length = 500)
     private String notes;
