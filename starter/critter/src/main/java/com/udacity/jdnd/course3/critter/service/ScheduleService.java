@@ -14,11 +14,13 @@ import com.udacity.jdnd.course3.critter.repository.model.Pet;
 import com.udacity.jdnd.course3.critter.repository.model.Schedule;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
