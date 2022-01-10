@@ -36,7 +36,7 @@ public class PetController {
 
     @GetMapping
     public List<PetDTO> getPets(){
-        return petService.
+        return petService.getPets();
     }
 
     @GetMapping("/owner/{ownerId}")
